@@ -1,0 +1,52 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: Arial, sans-serif;
+}
+
+form {
+    margin: 20px;
+}
+
+.treemap-container {
+    display: flex;
+    height: calc(100vh - 40px);
+}
+
+.legend-container {
+    width: 20%;
+    border: 1px solid black;
+    overflow-y: auto;
+}
+
+.treemap-display {
+    flex: 1;
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    box-sizing: border-box;
+    height: 100%;
+}
+
+.treemap-node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid black;
+    margin: 0;
+    padding: 5px;
+    box-sizing: border-box;
+}
+
+.treemap-children {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
