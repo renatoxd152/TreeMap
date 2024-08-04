@@ -15,7 +15,55 @@ form {
 }
 
 .legend-container {
-    width: 20%;
+    width: 20%;body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: Arial, sans-serif;
+}
+
+form {
+  margin: 20px;
+}
+
+.treemap-container {
+  display: flex;
+  height: calc(100vh - 40px);
+}
+
+.legend-container {
+  width: 20%;
+  border: 1px solid black;
+  overflow-y: auto;
+}
+
+.treemap-display {
+  flex: 1;
+  border: 1px solid black;
+  position: relative;
+  overflow: hidden;
+}
+
+.treemap-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid black;
+  margin: 0;
+  padding: 5px;
+  box-sizing: border-box;
+}
+
+.treemap-children {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
     border: 1px solid black;
     overflow-y: auto;
 }

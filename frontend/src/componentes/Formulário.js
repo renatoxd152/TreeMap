@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getRandomColor } from '../utils/Color.js';
-import { createBinaryTree } from '../utils/Treemaputils.js';
+import { createAVLTree } from '../utils/Treemaputils.js';
 import Treemap from './Treemap.js';
 
 const Forms = () => {
@@ -29,7 +29,7 @@ const Forms = () => {
     setFood({ name: '', quantity: '' });
   };
 
-  const root = createBinaryTree(foodList);
+  const root = createAVLTree(foodList);
   const totalQuantity = foodList.reduce((total, item) => total + parseInt(item.quantity, 10), 0);
 
   return (

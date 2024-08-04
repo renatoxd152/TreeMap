@@ -1,9 +1,9 @@
 import React from 'react';
 
 const Treemap = ({ node, totalQuantity }) => {
-  if (!node) return null;
+  if (!node || !node.value) return null;
 
-  const nodeSize = (node.value.quantity / totalQuantity) * 100;
+  const nodeSize = (parseInt(node.value.quantity, 10) / totalQuantity) * 100;
 
   const nodeStyle = {
     display: 'flex',
