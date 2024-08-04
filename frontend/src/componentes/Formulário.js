@@ -1,76 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import '../treemap.css';
-
-const getRandomColor = () => `hsl(${Math.random() * 360}, 70%, 80%)`;
-
-class TreeNode {
-  constructor(value, left = null, right = null) {
-    this.value = value;
-    this.left = left;
-    this.right = right;
-  }
-}
-
-const insertNode = (root, value) => {
-  if (!root) return new TreeNode(value);
-
-  if (parseInt(value.quantity, 10) < parseInt(root.value.quantity, 10)) {
-    root.left = insertNode(root.left, value);
-  } else {
-    root.right = insertNode(root.right, value);
-  }
-
-  return root;
-};
-
-
-const createBinaryTree = (data) => {
-  let root = null;
-  data.sort((a, b) => b.quantity - a.quantity).forEach(item => {
-    root = insertNode(root, item);
-  });
-  return root;
-};
-
-const Treemap = ({ node, totalQuantity }) => {
-    if (!node) return null;
-  
-    const nodeSize = (node.value.quantity / totalQuantity) * 100;
-    
-    const nodeStyle = {
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      border: '1px solid black',
-      margin: '0',
-      padding: '5px',
-      backgroundColor: node.value.color,
-      flex: `${nodeSize}%`,
-      boxSizing: 'border-box',
-    };
-  
-    const childrenStyle = {
-      display: 'flex',
-      flexDirection: 'row',
-      flexWrap: 'wrap',
-      justifyContent: 'center',
-      alignItems: 'center',
-      width: '100%',
-      height: '100%',
-      boxSizing: 'border-box',
-    };
-  
-    return (
-      <div style={nodeStyle}>
-        <div>{node.value.name} - {node.value.quantity}</div>
-        <div style={childrenStyle}>
-          <Treemap node={node.left} totalQuantity={totalQuantity} />
-          <Treemap node={node.right} totalQuantity={totalQuantity} />
-        </div>
-      </div>
-    );
-  };
-  
+import { getRandomColor } from '../utils/Color.js';
+import { createBinaryTree } from '../utils/Treemaputils.js';
+import Treemap from './Treemap.js';
 
 const Forms = () => {
   const [food, setFood] = useState({ name: '', quantity: '' });
@@ -99,6 +30,7 @@ const Forms = () => {
   };
 
   const root = createBinaryTree(foodList);
+  const totalQuantity = foodList.reduce((total, item) => total + parseInt(item.quantity, 10), 0);
 
   return (
     <div>
@@ -143,7 +75,7 @@ const Forms = () => {
           </ul>
         </div>
         <div style={{ flex: 1, border: '1px solid black', overflow: 'auto' }}>
-          <Treemap node={root} />
+          <Treemap node={root} totalQuantity={totalQuantity} />
         </div>
       </div>
     </div>
