@@ -1,7 +1,5 @@
-import React from "react";
-import { getRandomColor } from "../utils/Color";
+import { getColorForFood } from "../utils/Color";
 import { squarify } from "./Squarify";
-
 const Treemap = ({ node, totalQuantity }) => {
   const width = 800;
   const height = 600;
@@ -25,7 +23,7 @@ const Treemap = ({ node, totalQuantity }) => {
             top: `${rect.y}px`,
             width: `${rect.width}px`,
             height: `${rect.height}px`,
-            backgroundColor: getRandomColor(),
+            backgroundColor: getColorForFood(rect.value, totalQuantity),
             border: "1px solid #000",
             boxSizing: "border-box",
             overflow: "hidden",
@@ -42,5 +40,4 @@ const Treemap = ({ node, totalQuantity }) => {
     </div>
   );
 };
-
-export default Treemap;
+export default Treemap

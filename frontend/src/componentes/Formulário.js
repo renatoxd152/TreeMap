@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getRandomColor } from '../utils/Color.js';
+import { getColorForFood } from '../utils/Color.js';
 import { createAVLTree } from './Squarify.js';
 import Treemap from './Treemap.js';
 const Forms = () => {
@@ -19,14 +19,23 @@ const Forms = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    const newFood = { ...food, color: getRandomColor() };
-
+  
+    const quantity = parseInt(food.quantity, 10);
+    const totalQuantity = foodList.reduce((total, item) => total + parseInt(item.quantity, 10), 0) + quantity;
+  
+    const newFood = {
+      ...food,
+      color: getColorForFood(quantity, totalQuantity)
+    };
+  
     const updatedFoodList = [...foodList, newFood];
     setFoodList(updatedFoodList);
     localStorage.setItem('foodList', JSON.stringify(updatedFoodList));
     setFood({ name: '', quantity: '' });
   };
+  
+  
+  
 
   const root = createAVLTree(foodList);
   const totalQuantity = foodList.reduce((total, item) => total + parseInt(item.quantity, 10), 0);
