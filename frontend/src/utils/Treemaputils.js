@@ -1,86 +1,111 @@
-export class TreeNode {
-  constructor(value, left = null, right = null, height = 1) {
+class Node {
+  constructor(key, value) {
+    this.key = key;
     this.value = value;
-    this.left = left;
-    this.right = right;
-    this.height = height;
+    this.height = 1;
+    this.left = null;
+    this.right = null;
   }
 }
 
-const getHeight = (node) => (node ? node.height : 0);
-
-const getBalance = (node) => (node ? getHeight(node.left) - getHeight(node.right) : 0);
-
-const rotateRight = (y) => {
-  const x = y.left;
-  const T2 = x.right;
-
-  x.right = y;
-  y.left = T2;
-
-  y.height = Math.max(getHeight(y.left), getHeight(y.right)) + 1;
-  x.height = Math.max(getHeight(x.left), getHeight(x.right)) + 1;
-
-  return x;
-};
-
-const rotateLeft = (x) => {
-  const y = x.right;
-  const T2 = y.left;
-
-  y.left = x;
-  x.right = T2;
-
-  x.height = Math.max(getHeight(x.left), getHeight(x.right)) + 1;
-  y.height = Math.max(getHeight(y.left), getHeight(y.right)) + 1;
-
-  return y;
-};
-
-export const insertNode = (node, value) => {
-  if (!node) return new TreeNode(value);
-
-  if (parseInt(value.quantity, 10) < parseInt(node.value.quantity, 10)) {
-    node.left = insertNode(node.left, value);
-  } else {
-    node.right = insertNode(node.right, value);
+class AVLTree {
+  constructor() {
+    this.root = null;
   }
 
-  node.height = Math.max(getHeight(node.left), getHeight(node.right)) + 1;
-
-  const balance = getBalance(node);
-
-  if (balance > 1 && parseInt(value.quantity, 10) < parseInt(node.left.value.quantity, 10)) {
-    return rotateRight(node);
+  getHeight(node) {
+    return node ? node.height : 0;
   }
 
-  if (balance < -1 && parseInt(value.quantity, 10) > parseInt(node.right.value.quantity, 10)) {
-    return rotateLeft(node);
+  getBalance(node) {
+    return node ? this.getHeight(node.left) - this.getHeight(node.right) : 0;
   }
 
-  if (balance > 1 && parseInt(value.quantity, 10) > parseInt(node.left.value.quantity, 10)) {
-    node.left = rotateLeft(node.left);
-    return rotateRight(node);
+  rightRotate(y) {
+    let x = y.left;
+    let T2 = x.right;
+
+    x.right = y;
+    y.left = T2;
+
+    y.height = Math.max(this.getHeight(y.left), this.getHeight(y.right)) + 1;
+    x.height = Math.max(this.getHeight(x.left), this.getHeight(x.right)) + 1;
+
+    return x;
   }
 
-  if (balance < -1 && parseInt(value.quantity, 10) < parseInt(node.right.value.quantity, 10)) {
-    node.right = rotateRight(node.right);
-    return rotateLeft(node);
+  leftRotate(x) {
+    let y = x.right;
+    let T2 = y.left;
+
+    y.left = x;
+    x.right = T2;
+
+    x.height = Math.max(this.getHeight(x.left), this.getHeight(x.right)) + 1;
+    y.height = Math.max(this.getHeight(y.left), this.getHeight(y.right)) + 1;
+
+    return y;
   }
 
-  return node;
-};
+  insertNode(node, key, value) {
+    if (!node) {
+      return new Node(key, value);
+    }
 
-export const createAVLTree = (data) => {
-  let root = null;
-  data.forEach(item => {
-    root = insertNode(root, item);
-  });
+    if (key < node.key) {
+      node.left = this.insertNode(node.left, key, value);
+    } else if (key > node.key) {
+      node.right = this.insertNode(node.right, key, value);
+    } else {
+      return node;
+    }
 
-  return root;
-};
+    node.height = 1 + Math.max(this.getHeight(node.left), this.getHeight(node.right));
 
+    let balance = this.getBalance(node);
 
+    if (balance > 1 && key < node.left.key) {
+      return this.rightRotate(node);
+    }
 
+    if (balance < -1 && key > node.right.key) {
+      return this.leftRotate(node);
+    }
 
+    if (balance > 1 && key > node.left.key) {
+      node.left = this.leftRotate(node.left);
+      return this.rightRotate(node);
+    }
 
+    if (balance < -1 && key < node.right.key) {
+      node.right = this.rightRotate(node.right);
+      return this.leftRotate(node);
+    }
+
+    return node;
+  }
+
+  insert(key, value) {
+    this.root = this.insertNode(this.root, key, value);
+  }
+
+  inOrder(node, result = []) {
+    if (node) {
+      this.inOrder(node.left, result);
+      result.push({ key: node.key, value: node.value });
+      this.inOrder(node.right, result);
+    }
+    return result;
+  }
+
+  
+
+  getInOrder() {
+    return this.inOrder(this.root);
+  }
+  
+
+  
+}
+
+export default AVLTree;

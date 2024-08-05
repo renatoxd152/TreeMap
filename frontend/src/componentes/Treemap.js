@@ -1,40 +1,44 @@
-import React from 'react';
+import React from "react";
+import { getRandomColor } from "../utils/Color";
+import { squarify } from "./Squarify";
 
 const Treemap = ({ node, totalQuantity }) => {
-  if (!node || !node.value) return null;
-
-  const nodeSize = (parseInt(node.value.quantity, 10) / totalQuantity) * 100;
-
-  const nodeStyle = {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    border: '1px solid black',
-    margin: '0',
-    padding: '5px',
-    backgroundColor: node.value.color,
-    flex: `${nodeSize}%`,
-    boxSizing: 'border-box',
-  };
-
-  const childrenStyle = {
-    display: 'flex',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100%',
-    height: '100%',
-    boxSizing: 'border-box',
-  };
+  const width = 800;
+  const height = 600;
+  const rectangles = squarify(node, 0, 0, width, height);
 
   return (
-    <div style={nodeStyle}>
-      <div>{node.value.name} - {node.value.quantity}</div>
-      <div style={childrenStyle}>
-        <Treemap node={node.left} totalQuantity={totalQuantity} />
-        <Treemap node={node.right} totalQuantity={totalQuantity} />
-      </div>
+    <div
+      style={{
+        position: "relative",
+        width: `${width}px`,
+        height: `${height}px`,
+        border: "1px solid #000"
+      }}
+    >
+      {rectangles.map((rect, index) => (
+        <div
+          key={index}
+          style={{
+            position: "absolute",
+            left: `${rect.x}px`,
+            top: `${rect.y}px`,
+            width: `${rect.width}px`,
+            height: `${rect.height}px`,
+            backgroundColor: getRandomColor(),
+            border: "1px solid #000",
+            boxSizing: "border-box",
+            overflow: "hidden",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            fontSize: "12px"
+          }}
+          title={`${rect.name}: ${rect.value}`}
+        >
+          {rect.name}
+        </div>
+      ))}
     </div>
   );
 };

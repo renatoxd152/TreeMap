@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { getRandomColor } from '../utils/Color.js';
-import { createAVLTree } from '../utils/Treemaputils.js';
+import { createAVLTree } from './Squarify.js';
 import Treemap from './Treemap.js';
-
 const Forms = () => {
   const [food, setFood] = useState({ name: '', quantity: '' });
   const [foodList, setFoodList] = useState([]);
